@@ -3,18 +3,10 @@
   "version": "1.0.0",
   "description": "NexusERP Backend",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "seed": "node prisma/seed.js",
-    "seed:users": "node prisma/seed-users.js",
-    "seed:masters": "node prisma/masters-seed.js",
-    "seed:extra": "node prisma/seed-extra.js",
-    "seed:procurement": "node prisma/seed-procurement.js",
-    "seed:manufacturing": "node prisma/seed-manufacturing.js",
-    "seed:params": "node prisma/seed-qc-params.js",
-    "backup": "node prisma/backup.js",
-    "restore": "node prisma/restore.js",
     "db:push": "npx prisma db push",
     "migrate": "npx prisma migrate dev",
     "generate": "npx prisma generate",
@@ -40,8 +32,5 @@
   "devDependencies": {
     "nodemon": "^3.1.0",
     "prisma": "^5.22.0"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }
