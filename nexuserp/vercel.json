@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "buildCommand": "cd nexuserp/client && npm install && npm run build",
-  "outputDirectory": "nexuserp/client/dist",
-  "installCommand": "npm install"
+    "version": 2,
+    "buildCommand": "cd nexuserp/client && npm install && npm run build",
+    "outputDirectory": "nexuserp/client/dist",
+    "installCommand": "npm install" 
 }
