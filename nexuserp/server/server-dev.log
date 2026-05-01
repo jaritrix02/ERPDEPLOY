@@ -1,0 +1,210 @@
+[35m[SYSTEM][0m NexusERP Server running on port 5000
+[DB] Attempting to connect to PostgreSQL...
+Client connected: IbfiecRybL6vCRJtAAAC
+Client connected: 782YCsQ_zsq9IyWpAAAD
+✅ Database connection established successfully
+[DB] Connected! Current user count: 9
+[34m[INFO][0m Syncing demo users for all departments...
+[34m[INFO][0m Synced user: admin@nexuserp.com (ADMIN)
+[34m[INFO][0m Synced user: hod@nexuserp.com (HOD)
+[34m[INFO][0m Synced user: purchase@nexuserp.com (PURCHASE)
+[34m[INFO][0m Synced user: store@nexuserp.com (STORE)
+[34m[INFO][0m Synced user: hr@nexuserp.com (HR)
+[34m[INFO][0m Synced user: qc@nexuserp.com (QC)
+[34m[INFO][0m Synced user: gate@nexuserp.com (GATE)
+[34m[INFO][0m Synced user: sales@nexuserp.com (SALES)
+[34m[INFO][0m Synced user: maintenance@nexuserp.com (MAINTENANCE)
+[32m[SUCCESS][0m Demo users sync cycle completed!
+[32m[SUCCESS][0m Demo data ready: 3 employees, 48 modules, WO-DEMO-001 work order
+Login attempt for: admin@nexuserp.com
+[AUTH SERVICE] Validating: admin@nexuserp.com
+Login successful for: admin@nexuserp.com
+[0mPOST /api/auth/login [32m200[0m 95.571 ms - 8688[0m
+[0mGET /api/health [32m200[0m 64.495 ms - 49[0m
+[0mGET /api/auth/me [32m200[0m 4.908 ms - 8658[0m
+[0mGET /api/dashboard [32m200[0m 179.020 ms - 635[0m
+[0mGET /api/dashboard/purchase [32m200[0m 13.326 ms - 677[0m
+[0mGET /api/dashboard/sales [32m200[0m 6.198 ms - 1796[0m
+[0mGET /api/dashboard/costing [32m200[0m 6.397 ms - 1856[0m
+[0mGET /api/users [32m200[0m 13.066 ms - 77864[0m
+[0mGET /api/tasks [32m200[0m 57.871 ms - 553[0m
+[0mGET /api/employees [32m200[0m 4.789 ms - 2753[0m
+[0mGET /api/departments [32m200[0m 57.413 ms - 672[0m
+[0mGET /api/designations [32m200[0m 57.286 ms - 454[0m
+[0mGET /api/employee-categories [32m200[0m 55.052 ms - 304[0m
+[0mGET /api/attendance [32m200[0m 58.602 ms - 6845[0m
+[0mGET /api/salary [32m200[0m 60.736 ms - 4954[0m
+[0mGET /api/salary/attendance [32m200[0m 5.383 ms - 93[0m
+[0mGET /api/leaves [32m200[0m 5.071 ms - 2136[0m
+[0mGET /api/jobs [32m200[0m 2.607 ms - 485[0m
+[0mGET /api/performance [32m200[0m 4.037 ms - 2153[0m
+[0mGET /api/trainings [32m200[0m 2.656 ms - 447[0m
+[0mGET /api/exits [32m200[0m 4.333 ms - 1050[0m
+[0mGET /api/ess/me [32m200[0m 9.734 ms - 2169[0m
+[0mGET /api/vendors [32m200[0m 57.835 ms - 958[0m
+[0mGET /api/customers [32m200[0m 2.409 ms - 654[0m
+[0mGET /api/groups [32m200[0m 2.608 ms - 355[0m
+[0mGET /api/transporters [32m200[0m 2.648 ms - 480[0m
+[0mGET /api/terms [32m200[0m 56.954 ms - 199[0m
+[0mGET /api/units [32m200[0m 55.052 ms - 271[0m
+[0mGET /api/gst [32m200[0m 56.094 ms - 155[0m
+[0mGET /api/items [32m200[0m 59.025 ms - 1855[0m
+[0mGET /api/stores [32m200[0m 54.498 ms - 212[0m
+[0mGET /api/products [32m200[0m 90.920 ms - 1124[0m
+[0mGET /api/movements [32m200[0m 63.071 ms - 1491[0m
+[0mGET /api/grn [32m200[0m 60.520 ms - 1960[0m
+[0mGET /api/mrn [32m200[0m 58.364 ms - 505[0m
+[0mGET /api/indents [32m200[0m 173.464 ms - 1390[0m
+[0mGET /api/purchase-orders [32m200[0m 176.680 ms - 3876[0m
+[0mGET /api/purchase-bills [32m200[0m 70.843 ms - 2314[0m
+[0mGET /api/purchase-returns [32m200[0m 66.147 ms - 1864[0m
+[0mGET /api/gate-pass [32m200[0m 65.355 ms - 1861[0m
+[0mGET /api/gate-pass/outward [32m200[0m 4.660 ms - 479[0m
+[0mGET /api/sales-orders [32m200[0m 3.511 ms - 505[0m
+[0mGET /api/costing [32m200[0m 3.583 ms - 948[0m
+[0mGET /api/bom [32m200[0m 61.259 ms - 1257[0m
+[0mGET /api/manufacturing [32m200[0m 12.851 ms - 1574[0m
+[0mGET /api/qc [32m200[0m 7.329 ms - 467[0m
+[0mGET /api/qc/parameters [32m200[0m 7.439 ms - 604[0m
+[0mGET /api/qc-parameters [32m200[0m 60.249 ms - 604[0m
+[0mGET /api/machines [32m200[0m 161.760 ms - 448[0m
+[0mGET /api/breakdowns [32m200[0m 62.803 ms - 1004[0m
+[0mGET /api/ci/checklists [32m200[0m 59.048 ms - 315[0m
+[0mGET /api/ci/kaizens [32m200[0m 5.102 ms - 495[0m
+[0mGET /api/ci/pokayokes [32m200[0m 5.060 ms - 357[0m
+Client disconnected: IbfiecRybL6vCRJtAAAC
+[0mGET /api/auth/me [32m200[0m 9.928 ms - 8658[0m
+Client connected: VZdMDVQCsgf2v_WQAAAF
+[0mGET /api/dashboard [32m200[0m 13.845 ms - 635[0m
+Client disconnected: 782YCsQ_zsq9IyWpAAAD
+Client connected: YnLHPf7C8sAgmVDQAAAH
+[0mGET /api/auth/me [32m200[0m 316.090 ms - 8658[0m
+[0mGET /api/ess/me [32m200[0m 394.175 ms - 2169[0m
+[0mGET /api/users [32m200[0m 50.292 ms - 77864[0m
+Login attempt for: admin@nexuserp.com
+[AUTH SERVICE] Validating: admin@nexuserp.com
+Login successful for: admin@nexuserp.com
+[0mPOST /api/auth/login [32m200[0m 107.457 ms - 8688[0m
+[0mGET /api/auth/me [36m304[0m 24.589 ms - -[0m
+Client connected: KrX1W6ackASB3yYyAAAJ
+[0mGET /api/dashboard [32m200[0m 149.344 ms - 635[0m
+[0mGET /api/employees [32m200[0m 19.592 ms - 2753[0m
+[0mGET /api/tasks?start=2026-05-01&end=2026-05-31 [32m200[0m 112.734 ms - 26[0m
+[0mGET /api/vendors [32m200[0m 102.597 ms - 958[0m
+Client disconnected: KrX1W6ackASB3yYyAAAJ
+[0mGET /api/vendors [32m200[0m 6.463 ms - 958[0m
+[0mGET /api/auth/me [32m200[0m 11.280 ms - 8658[0m
+Client connected: UK0bDRLUOSyJjdOsAAAL
+[0mGET /api/purchase-orders [32m200[0m 145.562 ms - 3876[0m
+[0mGET /api/vendors [36m304[0m 12.598 ms - -[0m
+[0mGET /api/purchase-orders [36m304[0m 25.647 ms - -[0m
+[0mGET /api/purchase-bills [32m200[0m 301.364 ms - 2314[0m
+[0mGET /api/items [32m200[0m 278.543 ms - 1855[0m
+[0mGET /api/purchase-returns [32m200[0m 116.028 ms - 1864[0m
+[0mGET /api/grn [32m200[0m 150.695 ms - 1960[0m
+[0mGET /api/grn [36m304[0m 14.143 ms - -[0m
+[0mGET /api/purchase-orders?status=APPROVED [32m200[0m 17.375 ms - 3876[0m
+[0mGET /api/gate-pass [32m200[0m 91.795 ms - 1861[0m
+[0mGET /api/grn?status=APPROVED [32m200[0m 7.433 ms - 1960[0m
+[0mGET /api/mrn [32m200[0m 89.619 ms - 505[0m
+[0mGET /api/items [36m304[0m 14.936 ms - -[0m
+[0mGET /api/units [32m200[0m 111.579 ms - 271[0m
+[0mGET /api/gst [32m200[0m 117.105 ms - 155[0m
+[0mGET /api/units [36m304[0m 4.725 ms - -[0m
+[0mGET /api/gst [36m304[0m 4.489 ms - -[0m
+[0mGET /api/stores [32m200[0m 95.619 ms - 212[0m
+[0mGET /api/items [36m304[0m 16.053 ms - -[0m
+[0mGET /api/stores [36m304[0m 14.672 ms - -[0m
+[0mGET /api/products [32m200[0m 105.909 ms - 1124[0m
+[0mGET /api/products [36m304[0m 12.290 ms - -[0m
+[0mGET /api/stores [36m304[0m 4.769 ms - -[0m
+[0mGET /api/movements [32m200[0m 95.091 ms - 1491[0m
+[0mGET /api/gate-pass [36m304[0m 10.952 ms - -[0m
+[0mGET /api/purchase-orders?status=APPROVED [36m304[0m 13.845 ms - -[0m
+[0mGET /api/gate-pass/outward [32m200[0m 12.007 ms - 479[0m
+[0mGET /api/employees [36m304[0m 15.607 ms - -[0m
+[0mGET /api/departments [32m200[0m 99.462 ms - 672[0m
+[0mGET /api/gatepass [32m200[0m 114.532 ms - 3884[0m
+[0mGET /api/products [36m304[0m 9.108 ms - -[0m
+[0mGET /api/bom [32m200[0m 112.528 ms - 1257[0m
+[0mGET /api/bom [36m304[0m 12.437 ms - -[0m
+[0mGET /api/manufacturing [32m200[0m 34.870 ms - 1574[0m
+[0mGET /api/manufacturing [36m304[0m 8.386 ms - -[0m
+[0mGET /api/stores [36m304[0m 4.498 ms - -[0m
+[0mGET /api/manufacturing [36m304[0m 9.748 ms - -[0m
+[0mGET /api/employees [36m304[0m 84.129 ms - -[0m
+[0mGET /api/stores [36m304[0m 6.679 ms - -[0m
+[0mGET /api/manufacturing [36m304[0m 9.826 ms - -[0m
+[0mGET /api/items [36m304[0m 9.149 ms - -[0m
+[0mGET /api/stores [36m304[0m 7.078 ms - -[0m
+[0mGET /api/items [36m304[0m 12.458 ms - -[0m
+[0mGET /api/products [36m304[0m 20.691 ms - -[0m
+[0mGET /api/dashboard/costing [32m200[0m 16.530 ms - 1856[0m
+[0mGET /api/costing [32m200[0m 12.531 ms - 948[0m
+[0mGET /api/qc-parameters [32m200[0m 138.486 ms - 604[0m
+[0mGET /api/qc/templates?stage=RAW_MATERIAL_TEST [32m200[0m 140.016 ms - 251[0m
+[0mGET /api/qc/pending/RAW_MATERIAL_TEST [36m304[0m 239.914 ms - -[0m
+[0mGET /api/qc/reports?stage=RAW_MATERIAL_TEST [32m200[0m 246.026 ms - 2343[0m
+[0mGET /api/qc-parameters [36m304[0m 7.958 ms - -[0m
+[0mGET /api/qc/reports?stage=SEMI_FINISHED [36m304[0m 8.053 ms - -[0m
+[0mGET /api/qc/templates?stage=SEMI_FINISHED [36m304[0m 16.004 ms - -[0m
+[0mGET /api/qc-parameters [36m304[0m 7.699 ms - -[0m
+[0mGET /api/qc/templates?stage=PROCESS [36m304[0m 10.775 ms - -[0m
+[0mGET /api/qc/reports?stage=PROCESS [36m304[0m 13.238 ms - -[0m
+[0mGET /api/qc-parameters [36m304[0m 6.087 ms - -[0m
+[0mGET /api/qc/templates?stage=FINAL [36m304[0m 9.469 ms - -[0m
+[0mGET /api/qc/reports?stage=FINAL [36m304[0m 12.127 ms - -[0m
+[0mGET /api/qc-parameters [36m304[0m 8.750 ms - -[0m
+[0mGET /api/ci/checklists [32m200[0m 91.450 ms - 315[0m
+[0mGET /api/ci/kaizens [32m200[0m 11.551 ms - 495[0m
+[0mGET /api/ci/pokayokes [32m200[0m 10.684 ms - 357[0m
+[0mGET /api/vendors [36m304[0m 8.049 ms - -[0m
+[0mGET /api/items [36m304[0m 8.400 ms - -[0m
+[0mGET /api/purchase-orders [36m304[0m 11.860 ms - -[0m
+[0mGET /api/users [32m200[0m 93.058 ms - 77864[0m
+[0mGET /api/vendors [36m304[0m 82.925 ms - -[0m
+Client disconnected: VZdMDVQCsgf2v_WQAAAF
+Client connected: sAo-dI3_7xWvoxH7AAAN
+[0mGET /api/auth/me [36m304[0m 13.299 ms - -[0m
+[0mGET /api/users [36m304[0m 109.186 ms - -[0m
+[0mGET /api/employees [32m200[0m 25.140 ms - 2753[0m
+[0mGET /api/departments [32m200[0m 23.865 ms - 672[0m
+[0mGET /api/employee-categories [32m200[0m 114.236 ms - 304[0m
+[0mGET /api/designations [32m200[0m 202.933 ms - 454[0m
+[0mGET /api/departments [36m304[0m 5.504 ms - -[0m
+[0mGET /api/designations [36m304[0m 6.160 ms - -[0m
+[0mGET /api/employee-categories [36m304[0m 6.012 ms - -[0m
+[0mGET /api/employees [36m304[0m 7.872 ms - -[0m
+[0mGET /api/departments [36m304[0m 9.069 ms - -[0m
+[0mGET /api/attendance/summary?date=2026-05-01 [32m200[0m 112.970 ms - 120[0m
+[0mGET /api/attendance?from=2026-05-01&to=2026-05-01&employeeId=&department=&status=&search= [32m200[0m 118.355 ms - 26[0m
+[0mGET /api/departments [36m304[0m 3.103 ms - -[0m
+[0mGET /api/employees [36m304[0m 5.695 ms - -[0m
+[0mGET /api/departments [36m304[0m 3.258 ms - -[0m
+[0mGET /api/employees [36m304[0m 5.270 ms - -[0m
+[0mGET /api/salary [32m200[0m 92.346 ms - 4954[0m
+[0mGET /api/departments [36m304[0m 4.084 ms - -[0m
+[0mGET /api/employees [36m304[0m 10.762 ms - -[0m
+[0mGET /api/advances [32m200[0m 102.693 ms - 2596[0m
+[0mGET /api/salary [36m304[0m 13.838 ms - -[0m
+[0mGET /api/employees [36m304[0m 9.021 ms - -[0m
+[0mGET /api/departments [36m304[0m 7.892 ms - -[0m
+[0mGET /api/jobs [32m200[0m 5.851 ms - 485[0m
+[0mGET /api/departments [36m304[0m 6.114 ms - -[0m
+[0mGET /api/employees [36m304[0m 6.194 ms - -[0m
+[0mGET /api/leaves [32m200[0m 12.180 ms - 2136[0m
+[0mGET /api/performance [32m200[0m 6.935 ms - 2153[0m
+[0mGET /api/employees [36m304[0m 6.713 ms - -[0m
+[0mGET /api/trainings [32m200[0m 3.757 ms - 447[0m
+[0mGET /api/exits [32m200[0m 5.470 ms - 1050[0m
+[0mGET /api/employees [36m304[0m 5.558 ms - -[0m
+Client disconnected: sAo-dI3_7xWvoxH7AAAN
+Client disconnected: YnLHPf7C8sAgmVDQAAAH
+Client disconnected: UK0bDRLUOSyJjdOsAAAL
+[0mGET /api/vendors [36m304[0m 9.176 ms - -[0m
+[0mGET /api/auth/me [36m304[0m 11.028 ms - -[0m
+Client connected: otwzKuXeAiOiDMlxAAAP
+Client disconnected: otwzKuXeAiOiDMlxAAAP
+Client connected: 3edCWDd6v8pohlmTAAAR
+Client disconnected: 3edCWDd6v8pohlmTAAAR
+Client connected: 868ZKkQ50UML32tqAAAT

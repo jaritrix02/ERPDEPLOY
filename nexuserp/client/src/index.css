@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --background: 249 250 251; /* Gray-50 */
+    --foreground: 17 24 39;    /* Gray-900 */
+    --card: 255 255 255;
+    --card-foreground: 17 24 39;
+    --muted: 243 244 246;
+    --muted-foreground: 107 114 128;
+    --border: 229 231 235;
+    --input: 255 255 255;
+    --primary: 37 99 235;
+    --primary-foreground: 255 255 255;
+    --sidebar: 255 255 255;
+    --sidebar-foreground: 75 85 99;
+    --accent: 243 244 246;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 17 24 39;      /* Gray-900 */
+    --foreground: 249 250 251;
+    --card: 31 41 55;          /* Gray-800 */
+    --card-foreground: 249 250 251;
+    --muted: 55 65 81;
+    --muted-foreground: 156 163 175;
+    --border: 55 65 81;
+    --input: 31 41 55;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --sidebar: 17 24 39;
+    --sidebar-foreground: 156 163 175;
+    --accent: 55 65 81;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    @apply antialiased overflow-hidden h-screen w-screen m-0 p-0;
+  }
+
+  #root {
+    @apply h-full w-full overflow-hidden flex flex-col;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative overflow-hidden bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow-sm active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-6 py-2.5 rounded-lg text-sm font-semibold border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors active:scale-95 flex items-center justify-center gap-2 shadow-sm;
+  }
+  
+  .input-field {
+    @apply w-full border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all placeholder-gray-400 dark:placeholder-gray-500 shadow-sm;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm;
+  }
+  
+  .label {
+    @apply block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wider;
+  }
+
+  .table-head {
+    @apply bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .table-th {
+    @apply px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white;
+  }
+
+  .sidebar-active {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-bold bg-blue-600 text-white shadow-sm;
+  }
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+

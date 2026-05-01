@@ -1,0 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const c = require('../controllers/indentsController');
+const { protect } = require('../middleware/auth');
+router.use(protect);
+router.get('/', c.getIndents);
+router.post('/', c.createIndent);
+router.put('/:id/approve', c.approveIndent);
+router.put('/:id/short', c.shortIndent);
+router.put('/:id/close', c.closeIndent);
+module.exports = router;

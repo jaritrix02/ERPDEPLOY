@@ -1,0 +1,5 @@
+itemCode,itemName,itemType,unitOfMeasure,gstRate,openingStock
+RM-001,Steel Sheet 2mm,RAW_MATERIAL,PCS,18,100
+SFG-001,Semi-Finished Hub,SEMI_FINISHED,PCS,12,50
+FG-001,Finished Wheel Assembly,FINISHED,PCS,18,10
+CON-001,Industrial Grease,CONSUMABLE,KG,18,20

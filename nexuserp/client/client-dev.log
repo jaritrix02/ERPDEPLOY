@@ -1,0 +1,33 @@
+
+> nexuserp-client@1.0.0 dev
+> vite
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m736[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.2.8:[1m5173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.112.1:[1m5173[22m/[39m
+[2m8:19:06 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Performance.jsx, /src/index.css[22m
+[2m8:19:35 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/ExitManagement.jsx, /src/index.css[22m
+[2m8:20:07 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/ESSPortal.jsx, /src/index.css[22m
+[2m8:21:35 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/EmployeeAdvances.jsx, /src/index.css[22m
+[2m8:22:09 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Recruitment.jsx, /src/index.css[22m
+[2m8:22:39 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Training.jsx, /src/index.css[22m
+[2m8:23:28 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Attendance.jsx, /src/index.css[22m
+[2m8:23:57 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Departments.jsx, /src/index.css[22m
+[2m8:23:58 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/ESSPortal.jsx, /src/index.css[22m
+[2m8:24:24 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Designations.jsx, /src/index.css[22m
+[2m8:24:50 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/EmployeeCategories.jsx, /src/index.css[22m
+[2m8:25:26 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/LeaveManagement.jsx, /src/index.css[22m
+[2m8:26:01 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/SalaryRecords.jsx, /src/index.css[22m
+[2m8:26:58 PM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/SalarySlips.jsx, /src/index.css[22m
+[2m9:03:58 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/EmployeeGatePass.jsx, /src/index.css[22m
+[2m9:09:00 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Employees.jsx, /src/index.css[22m
+[2m9:09:51 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/EmployeeAdvances.jsx, /src/index.css[22m
+[2m9:10:21 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/ExitManagement.jsx, /src/index.css[22m
+[2m9:10:54 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Performance.jsx, /src/index.css[22m
+[2m9:11:26 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Recruitment.jsx, /src/index.css[22m
+[2m9:12:00 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/hr/Training.jsx, /src/index.css[22m
+[2m9:27:32 AM[22m [36m[1m[vite][22m[39m [32mvite.config.js changed, restarting server...[39m
+[2m9:27:33 AM[22m [36m[1m[vite][22m[39m server restarted.

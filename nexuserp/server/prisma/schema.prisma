@@ -1,0 +1,1197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ───────────────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  HOD
+  MANAGER
+  PURCHASE
+  STORE
+  HR
+  QC
+  GATE
+  SALES
+  MAINTENANCE
+  STAFF
+}
+
+enum IndentType {
+  OPEN_INDENT
+  AGAINST_ORDER
+  PRODUCTION
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum StoreType {
+  RAW_MATERIAL
+  SEMI_FINISHED_1
+  SEMI_FINISHED_2
+  FINISHED
+}
+
+enum ItemType {
+  RAW_MATERIAL
+  SEMI_FINISHED
+  FINISHED
+  CONSUMABLE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LATE
+  LEAVE
+  WEEKOFF
+  HOLIDAY
+}
+
+enum QCStage {
+  INCOMING
+  RAW_MATERIAL_TEST
+  SEMI_FINISHED
+  PROCESS
+  FINAL
+}
+
+enum MovementType {
+  IN
+  OUT
+  TRANSFER
+}
+
+enum GSTType {
+  CGST
+  SGST
+  IGST
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  MATERNITY
+  PATERNITY
+  COMPASSIONATE
+  UNPAID
+  WFH
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum DocumentCategory {
+  ID_PROOF
+  ADDRESS_PROOF
+  EDUCATION
+  EXPERIENCE
+  MEDICAL
+  BANK
+  OTHERS
+}
+
+enum PerformanceRating {
+  POOR
+  NEEDS_IMPROVEMENT
+  MEETS_EXPECTATIONS
+  EXCEEDS_EXPECTATIONS
+  OUTSTANDING
+}
+
+enum GoalStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// ─── USER & PERMISSIONS ──────────────────────────────────────────────────────
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        Role     @default(STAFF)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  permissions ModulePermission[]
+  employee    Employee?
+
+  @@map("users")
+}
+
+model ModulePermission {
+  id         String  @id @default(uuid())
+  userId     String
+  moduleName String
+  canRead    Boolean @default(false)
+  canWrite   Boolean @default(false)
+  canExecute Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleName])
+  @@map("module_permissions")
+}
+
+// ─── HR MODULE ────────────────────────────────────────────────────────────────
+
+model Employee {
+  id              String    @id @default(uuid())
+  employeeCode    String    @unique
+  userId          String?   @unique
+  name            String
+  fatherName      String?
+  department      String
+  designation     String
+  employeeCategory String?   @default("Staff")
+  employeeType    String?   @default("Full-Time")
+  salary          Float
+  phone           String    @db.VarChar(10)
+  email           String
+  uanNumber       String?
+  esiNumber       String?
+  aadharNumber    String?   @unique @db.Char(12)
+  panNumber       String?   @unique @db.Char(10)
+  alternativeNumber String?
+  accountNo       String?
+  bankName        String?
+  ifscCode        String?
+  memberId        String?
+  paymode         String?   @default("Bank Transfer")
+  joiningDate     DateTime
+  resignationDate DateTime?
+  profileImage    String?
+  aadharFile      String?
+  panFile         String?
+  aadharNumberEncrypted String? @db.Text
+  panNumberEncrypted    String? @db.Text
+  aadharIv       String?   @db.Char(24)
+  panIv          String?   @db.Char(24)
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user       User?        @relation(fields: [userId], references: [id])
+  attendance Attendance[]
+  issuedMaterial MaterialIssue[] @relation("IssuedBy")
+  indents    Indent[]
+  salarySlips SalarySlip[]
+  employeeAdvances EmployeeAdvance[]
+  employeeGatePasses EmployeeGatePass[]
+    documents  EmployeeDocument[]
+    leaveRequests LeaveRequest[] @relation("LeaveRequests")
+    leaveBalances LeaveBalance[] @relation("LeaveBalances")
+    performanceReviews PerformanceReview[] @relation("EmployeeReviews")
+    goals Goal[] @relation("EmployeeGoals")
+    reviewerOf PerformanceReview[] @relation("ReviewerOf")
+
+    @@map("employees")
+}
+
+// ─── LEAVE MANAGEMENT MODULE ───────────────────────────────────────────────────
+
+model LeavePolicy {
+  id          String   @id @default(uuid())
+  name        String   @unique // e.g., "Annual Leave", "Sick Leave"
+  description String?
+  paid        Boolean  @default(true)
+  allowedDays Int      @default(0) // 0 = unlimited
+  carryForward Boolean @default(false)
+  requiresAttachment Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  balances LeaveBalance[]
+  requests LeaveRequest[]
+
+  @@map("leave_policies")
+}
+
+model LeaveBalance {
+  id           String   @id @default(uuid())
+  employeeId   String
+  leavePolicyId  String
+  year         Int
+  totalDays    Float    @default(0)
+  usedDays     Float    @default(0)
+  pendingDays  Float    @default(0)
+  carriedOver  Float    @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  employee     Employee     @relation("LeaveBalances", fields: [employeeId], references: [id], onDelete: Cascade)
+  leavePolicy  LeavePolicy  @relation(fields: [leavePolicyId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, leavePolicyId, year])
+  @@map("leave_balances")
+}
+
+model LeaveRequest {
+  id             String       @id @default(uuid())
+  employeeId     String
+  leavePolicyId  String
+  fromDate       DateTime     @db.Date
+  toDate         DateTime     @db.Date
+  totalDays      Float
+  reason         String?
+  status         LeaveStatus  @default(PENDING)
+  approvedBy     String?
+  approvedAt     DateTime?
+  rejectionReason String?
+  attachmentUrl  String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  employee       Employee     @relation("LeaveRequests", fields: [employeeId], references: [id])
+  leavePolicy    LeavePolicy  @relation(fields: [leavePolicyId], references: [id])
+
+  @@map("leave_requests")
+}
+
+// ─── PERFORMANCE MANAGEMENT MODULE ────────────────────────────────────────────
+
+model ReviewCycle {
+  id          String   @id @default(uuid())
+  name        String   // e.g., "H1 2026", "Annual 2026"
+  startDate   DateTime @db.Date
+  endDate     DateTime @db.Date
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  reviews     PerformanceReview[]
+  goals       Goal[]
+
+  @@map("review_cycles")
+}
+
+model PerformanceReview {
+  id             String   @id @default(uuid())
+  employeeId     String
+  reviewCycleId  String
+  reviewerId     String?   // Manager/HR conducting review
+  overallRating  PerformanceRating?
+  summary        String?
+  strengths      String?   // JSON array
+  improvements   String?   // JSON array
+  status         LeaveStatus @default(PENDING) // PENDING, COMPLETED
+  submittedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  employee       Employee    @relation("EmployeeReviews", fields: [employeeId], references: [id])
+  reviewCycle    ReviewCycle @relation(fields: [reviewCycleId], references: [id])
+  reviewer       Employee?   @relation("ReviewerOf", fields: [reviewerId], references: [id])
+  goals          Goal[] @relation("GoalPerformanceReview")
+
+  @@unique([employeeId, reviewCycleId])
+  @@map("performance_reviews")
+}
+
+model Goal {
+  id             String    @id @default(uuid())
+  employeeId     String
+  reviewCycleId  String?
+  performanceReviewId String?
+  title          String
+  description    String?
+  startDate      DateTime  @db.Date
+  dueDate        DateTime  @db.Date
+  status         GoalStatus @default(NOT_STARTED)
+  priority       Int       @default(2) // 1=High, 2=Medium, 3=Low
+  weight         Float?    @default(1.0) // Weight in overall rating
+  completionDate DateTime?
+  progressNotes  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+   employee       Employee    @relation("EmployeeGoals", fields: [employeeId], references: [id], onDelete: Cascade)
+   reviewCycle    ReviewCycle? @relation(fields: [reviewCycleId], references: [id])
+   performanceReview PerformanceReview? @relation("GoalPerformanceReview", fields: [performanceReviewId], references: [id])
+   kpis           KPI[]
+
+   @@map("goals")
+}
+
+model KPI {
+  id        String   @id @default(uuid())
+  goalId    String
+  title     String
+  target    Float
+  actual    Float?
+  unit      String?  // e.g., "%", "units", "$"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@map("kpis")
+}
+
+// ─── SALARY SLIP ─────────────────────────────────────────────────────────────────
+
+model SalarySlip {
+  id              String   @id @default(uuid())
+  employeeId      String
+  employee        Employee @relation(fields: [employeeId], references: [id])
+  month           Int
+  year            Int
+  earnings        String   // JSON string
+  deductions      String   // JSON string
+  advances        String?  // JSON string
+  attendance      String   // JSON string
+  netPayable      Float
+  modifyHistory   String?  // JSON string
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([employeeId, month, year])
+  @@map("salary_slips")
+}
+
+model EmployeeAdvance {
+  id            String   @id @default(uuid())
+  employeeId    String
+  amount        Float
+  date          DateTime @db.Date
+  purpose       String?
+  paymentMode   String?  @default("Cash")       // Cash, Bank Transfer, Cheque
+  referenceNo   String?                          // Cheque/UTR/Voucher No
+  approvedBy    String?                          // Name of approving authority
+  status        String   @default("PENDING")     // PENDING, APPROVED, RECOVERED
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("employee_advances")
+}
+
+model EmployeeGatePass {
+  id            String    @id @default(uuid())
+  employeeId    String
+  gatePassNo    String?   @unique              // Auto-generated gate pass number
+  passType      String?   @default("Personal") // Personal, Official, Medical, Bank
+  date          DateTime  @db.Date
+  outTime       DateTime?
+  inTime        DateTime?
+  reason        String?
+  status        String    @default("OUT")     // OUT, RETURNED
+  approvedBy    String?
+  modifyHistory String?   // JSON string to track changes
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("employee_gate_passes")
+}
+
+model Department {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("departments")
+}
+
+model Designation {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("designations")
+}
+
+model EmployeeCategory {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("employee_categories")
+}
+
+model EmployeeDocument {
+  id           String   @id @default(uuid())
+  employeeId   String
+  documentCategory DocumentCategory @default(OTHERS)
+  customCategory   String? // Allow custom category name if needed
+  fileName     String
+  fileUrl      String
+  fileSize     Int?     // Size in bytes
+  fileType     String?  // MIME type
+  uploadedAt   DateTime @default(now())
+  uploadedBy   String?  // Admin/user who uploaded
+  isEncrypted Boolean  @default(false) // Mark if encrypted
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@map("employee_documents")
+}
+
+model Attendance {
+  id           String           @id @default(uuid())
+  employeeId   String
+  date         DateTime         @db.Date
+  status       AttendanceStatus
+  checkIn      DateTime?
+  checkOut     DateTime?
+  hoursWorked  Float?
+  modifiedBy   String?
+  modifyReason String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@unique([employeeId, date])
+  @@map("attendance")
+}
+
+// ─── MASTERS ─────────────────────────────────────────────────────────────────
+
+model UnitOfMeasurement {
+  id        String   @id @default(uuid())
+  unitName  String   @unique
+  unitCode  String   @unique
+  createdAt DateTime @default(now())
+
+  items Item[]
+
+  @@map("units")
+}
+
+model GSTRate {
+  id        String   @id @default(uuid())
+  type      GSTType
+  rateName  String
+  rate      Float
+  createdAt DateTime @default(now())
+
+  items Item[]
+
+  @@map("gst_rates")
+}
+
+model TermsAndConditions {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+
+  vendors Vendor[]
+
+  @@map("terms_conditions")
+}
+
+model Item {
+  id            String   @id @default(uuid())
+  itemCode      String   @unique
+  itemName      String
+  itemType      ItemType
+  unitId        String
+  gstId         String?
+  description   String?
+  minStockLevel Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  unit     UnitOfMeasurement @relation(fields: [unitId], references: [id])
+  gst      GSTRate?          @relation(fields: [gstId], references: [id])
+  products Product[]
+  indentItems    IndentItem[]
+  bomItems       BOMItem[]
+  stockMovements StockMovement[]
+  purchaseBills  PurchaseBill[]
+  poItems        POItem[]
+  materialIssueItems MaterialIssueItem[]
+
+  @@map("items")
+}
+
+model Vendor {
+  id            String   @id @default(uuid())
+  vendorCode    String   @unique
+  companyName   String
+  contactPerson String
+  phone         String
+  email         String
+  address       String
+  
+  // Newly Added Fields
+  printName     String?
+  category      String?  @default("Creditor")
+  groupName     String?
+  mobile        String?
+  address2      String?
+  address3      String?
+  city          String?
+  state         String?
+  country       String?
+  pinCode       String?
+  website       String?
+  fax           String?
+  panNumber     String?
+  creditDays    Int?     @default(0)
+
+  // Statutory Dates & Extras
+  tanNumber     String?
+  cinNumber     String?
+  msmeNumber    String?
+  cstNumber     String?
+  tinNumber     String?
+  gstRegDate    DateTime? @db.Date
+  tinDate       DateTime? @db.Date
+  cstDate       DateTime? @db.Date
+
+  // Financials
+  creditLimit   Float?   @default(0)
+  openingBalance Float?  @default(0)
+  currency      String?  @default("INR")
+  paymentTerms  String?
+
+  // Bank Details
+  bankName      String?
+  accountNumber String?
+  ifscCode      String?
+  branch        String?
+
+  // Other Settings
+  transporterName String?
+  purchaseExecutive String?
+  
+  gstNumber     String?
+  termsId       String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  terms         TermsAndConditions? @relation(fields: [termsId], references: [id])
+  purchaseOrders PurchaseOrder[]
+  gatePasses     GatePass[]
+  purchaseBills  PurchaseBill[]
+
+  @@map("vendors")
+}
+
+// ─── STORE & INVENTORY ────────────────────────────────────────────────────────
+
+model Store {
+  id        String    @id @default(uuid())
+  storeCode String    @unique
+  storeName String
+  storeType StoreType
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+
+  products      Product[]
+  fromMovements StockMovement[] @relation("FromStore")
+  toMovements   StockMovement[] @relation("ToStore")
+
+  @@map("stores")
+}
+
+model Product {
+  id        String    @id @default(uuid())
+  itemId    String
+  storeId   String
+  barcode   String    @unique
+  batchNo   String?
+  mfgDate   DateTime?
+  expDate   DateTime?
+  quantity  Float     @default(0)
+  rate      Float     @default(0)
+  size      String?
+  remark    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  item           Item            @relation(fields: [itemId], references: [id])
+  store          Store           @relation(fields: [storeId], references: [id])
+  stockMovements StockMovement[]
+
+  @@map("products")
+}
+
+model StockMovement {
+  id           String       @id @default(uuid())
+  productId    String
+  itemId       String
+  fromStoreId  String?
+  toStoreId    String?
+  movementType MovementType
+  quantity     Float
+  date         DateTime     @default(now())
+  remark       String?
+  createdBy    String
+
+  product   Product @relation(fields: [productId], references: [id])
+  item      Item    @relation(fields: [itemId], references: [id])
+  fromStore Store?  @relation("FromStore", fields: [fromStoreId], references: [id])
+  toStore   Store?  @relation("ToStore", fields: [toStoreId], references: [id])
+
+  @@map("stock_movements")
+}
+
+// ─── PURCHASE WORKFLOW ────────────────────────────────────────────────────────
+
+model Indent {
+  id             String         @id @default(uuid())
+  indentNo       String         @unique
+  indentType     IndentType
+  requestedById  String
+  orderId        String?
+  dueDate        DateTime?
+  status         ApprovalStatus @default(PENDING)
+  approvedById   String?
+  approvalDate   DateTime?
+  approvalRemark String?
+  isClosed       Boolean        @default(false)
+  remarks        String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  requestedBy    Employee        @relation(fields: [requestedById], references: [id])
+  items          IndentItem[]
+  purchaseOrders PurchaseOrder[]
+  materialIssues MaterialIssue[]
+
+  @@map("indents")
+}
+
+model IndentItem {
+  id               String    @id @default(uuid())
+  indentId         String
+  itemId           String
+  stockInHand      Float     @default(0)
+  requestQty       Float
+  shortQty         Float     @default(0)
+  closedQty        Float     @default(0)
+  lastVendor       String?
+  lastPurchaseDate DateTime?
+  lastPrice        Float?
+  remark           String?
+
+  indent Indent @relation(fields: [indentId], references: [id], onDelete: Cascade)
+  item   Item   @relation(fields: [itemId], references: [id])
+
+  @@map("indent_items")
+}
+
+model PurchaseOrder {
+  id            String         @id @default(uuid())
+  poNo          String         @unique
+  indentId      String?
+  vendorId      String
+  status        ApprovalStatus @default(PENDING)
+  approvedById  String?
+  approvalDate  DateTime?
+  approvalRemark String?
+  totalAmount   Float          @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  indent        Indent?        @relation(fields: [indentId], references: [id])
+  vendor        Vendor         @relation(fields: [vendorId], references: [id])
+  items         POItem[]
+  gatePasses    GatePass[]
+  grns          GRN[]
+  purchaseBills PurchaseBill[]
+
+  @@map("purchase_orders")
+}
+
+model POItem {
+  id     String @id @default(uuid())
+  poId   String
+  itemId String
+  qty    Float
+  rate   Float
+  amount Float
+
+  po   PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  item Item          @relation(fields: [itemId], references: [id])
+
+  @@map("po_items")
+}
+
+
+model GatePass {
+  id          String   @id @default(uuid())
+  gatePassNo  String   @unique
+  poId        String
+  vendorId    String
+  vehicleNo   String?
+  driverName  String?
+  receivedQty Float
+  date        DateTime @default(now())
+  remark      String?
+
+  po     PurchaseOrder @relation(fields: [poId], references: [id])
+  vendor Vendor        @relation(fields: [vendorId], references: [id])
+  grns   GRN[]
+
+  @@map("gate_passes")
+}
+
+model GRN {
+  id          String         @id @default(uuid())
+  grnNo       String         @unique
+  poId        String
+  gatePassId  String?
+  receivedQty Float
+  acceptedQty Float
+  rejectedQty Float          @default(0)
+  date        DateTime       @default(now())
+  status      ApprovalStatus @default(PENDING)
+
+  po              PurchaseOrder   @relation(fields: [poId], references: [id])
+  gatePass        GatePass?       @relation(fields: [gatePassId], references: [id])
+  mrns            MRN[]
+  qcReports       QCReport[]
+  purchaseReturns PurchaseReturn[]
+
+  @@map("grns")
+}
+
+model MRN {
+  id        String         @id @default(uuid())
+  mrnNo     String         @unique
+  grnId     String
+  status    ApprovalStatus @default(PENDING)
+  date      DateTime       @default(now())
+  remark    String?
+
+  grn GRN @relation(fields: [grnId], references: [id])
+
+  @@map("mrns")
+}
+
+model PurchaseBill {
+  id          String   @id @default(uuid())
+  billNo      String   @unique
+  poId        String
+  vendorId    String
+  itemId      String
+  invoiceNo   String
+  invoiceDate DateTime
+  batchNo     String?
+  mfgDate     DateTime?
+  expDate     DateTime?
+  qty         Float
+  rate        Float
+  cgst        Float    @default(0)
+  sgst        Float    @default(0)
+  igst        Float    @default(0)
+  totalAmount Float
+  createdAt   DateTime @default(now())
+
+  po     PurchaseOrder @relation(fields: [poId], references: [id])
+  vendor Vendor        @relation(fields: [vendorId], references: [id])
+  item   Item          @relation(fields: [itemId], references: [id])
+
+  @@map("purchase_bills")
+}
+
+model PurchaseReturn {
+  id        String   @id @default(uuid())
+  returnNo  String   @unique
+  grnId     String
+  returnQty Float
+  reason    String
+  date      DateTime @default(now())
+
+  grn GRN @relation(fields: [grnId], references: [id])
+
+  @@map("purchase_returns")
+}
+
+model SalesOrder {
+  id           String    @id @default(uuid())
+  orderNo      String    @unique
+  customerName String
+  customerCode String?
+  productName  String
+  quantity     Float
+  unitPrice    Float     @default(0)
+  totalAmount  Float     @default(0)
+  orderDate    DateTime  @db.Date
+  dueDate      DateTime? @db.Date
+  status       String    @default("OPEN") // OPEN, CONFIRMED, IN_PRODUCTION, READY_TO_DISPATCH, DISPATCHED, CLOSED, ON_HOLD
+  priority     String    @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  channel      String    @default("DIRECT")
+  assignedTo   String?
+  remarks      String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("sales_orders")
+}
+
+model CostingJob {
+  id                String   @id @default(uuid())
+  drawingNo         String   @unique
+  departmentType    String   @default("RUBBER")
+  projectName       String?
+  purchaseOrderId   String?
+  purchaseOrderNo   String?
+  sourceItemId      String?
+  sourceItemCode    String?
+  sourceItemName    String?
+  materialName      String
+  density           Float
+  items             Json
+  totalArea         Float    @default(0)
+  totalVolume       Float    @default(0)
+  totalWeight       Float    @default(0)
+  totalLineItems    Int      @default(0)
+  sheetLength       Float    @default(900)
+  sheetWidth        Float    @default(600)
+  sheetThickness    Float    @default(8)
+  sheetCostPerSheet Float    @default(0)
+  baseSheets        Float    @default(0)
+  addonSheets       Float    @default(0)
+  totalSheets       Float    @default(0)
+  utilizationPct    Float    @default(0)
+  wastagePct        Float    @default(0.25)
+  profitPct         Float    @default(0.10)
+  designPct         Float    @default(0.10)
+  holesPct          Float    @default(0.05)
+  rejectionPct      Float    @default(0.03)
+  packagingCost     Float    @default(0)
+  totalSetCost      Float    @default(0)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("costing_jobs")
+}
+
+// ─── QUALITY CONTROL ──────────────────────────────────────────────────────────
+
+model QCTemplate {
+  id        String   @id @default(uuid())
+  stage     QCStage
+  name      String
+  fields    Json
+  createdAt DateTime @default(now())
+
+  reports QCReport[]
+
+  @@map("qc_templates")
+}
+
+model QCReport {
+  id         String   @id @default(uuid())
+  qcNo       String   @unique
+  grnId      String?
+  woId       String?
+  stage      QCStage
+  templateId String
+  parameters Json
+  result     String?
+  passOrFail Boolean  @default(false)
+  status     String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedBy String?
+  approvedAt DateTime?
+  createdBy  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  grn       GRN?       @relation(fields: [grnId], references: [id])
+  workOrder WorkOrder? @relation(fields: [woId], references: [id])
+  template  QCTemplate @relation(fields: [templateId], references: [id])
+
+  @@map("qc_reports")
+}
+
+// ─── BOM & PRODUCTION ─────────────────────────────────────────────────────────
+
+model BOM {
+  id          String   @id @default(uuid())
+  bomCode     String   @unique
+  productName String
+  version     String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  items      BOMItem[]
+  workOrders WorkOrder[]
+
+  @@map("boms")
+}
+
+model BOMItem {
+  id     String @id @default(uuid())
+  bomId  String
+  itemId String
+  qty    Float
+  level  Int    @default(1)
+  unit   String
+
+  bom  BOM  @relation(fields: [bomId], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [id])
+
+  @@map("bom_items")
+}
+
+model WorkOrder {
+  id         String         @id @default(uuid())
+  woNo       String         @unique
+  bomId      String
+  plannedQty Float
+  status     ApprovalStatus @default(PENDING)
+  startDate  DateTime
+  endDate    DateTime?
+  createdAt  DateTime       @default(now())
+
+  bom        BOM        @relation(fields: [bomId], references: [id])
+  qcReports  QCReport[]
+  issues     MaterialIssue[]
+  processes  WorkOrderProcess[]
+  dailyOutputs DailyOutput[]
+
+  @@map("work_orders")
+}
+
+model WorkOrderProcess {
+  id           String    @id @default(uuid())
+  woId         String
+  workOrder    WorkOrder @relation(fields: [woId], references: [id], onDelete: Cascade)
+  processName  String
+  sequence     Int
+  status       String    @default("PENDING")
+  startTime    DateTime?
+  endTime      DateTime?
+  operatorName String?
+  plannedQty   Float
+  actualQty    Float     @default(0)
+  rejectQty    Float     @default(0)
+  qcRequired   Boolean   @default(false)
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("work_order_processes")
+}
+
+model DailyOutput {
+  id           String    @id @default(uuid())
+  woId         String
+  workOrder    WorkOrder @relation(fields: [woId], references: [id], onDelete: Cascade)
+  date         DateTime  @default(now())
+  processName  String
+  qtyProduced  Float
+  qtyRejected  Float     @default(0)
+  operatorName String
+  shift        String?
+  remarks      String?
+
+  createdAt    DateTime  @default(now())
+  
+  @@map("daily_outputs")
+}
+
+model MaterialIssue {
+  id             String         @id @default(uuid())
+  issueNo        String         @unique
+  woId           String
+  indentId       String?
+  issuedById     String
+  receivedById   String?
+  status         ApprovalStatus @default(PENDING)
+  date           DateTime       @default(now())
+  
+  workOrder      WorkOrder      @relation(fields: [woId], references: [id])
+  indent         Indent?        @relation(fields: [indentId], references: [id])
+  issuedBy       Employee       @relation("IssuedBy", fields: [issuedById], references: [id])
+  items          MaterialIssueItem[]
+
+  @@map("material_issues")
+}
+
+model MaterialIssueItem {
+  id              String        @id @default(uuid())
+  materialIssueId String
+  itemId          String
+  issueQty        Float
+  
+  materialIssue   MaterialIssue @relation(fields: [materialIssueId], references: [id], onDelete: Cascade)
+  item            Item          @relation(fields: [itemId], references: [id])
+
+  @@map("material_issue_items")
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime @db.Date
+  priority    String   @default("NORMAL")  // LOW, NORMAL, HIGH, URGENT
+  category    String   @default("GENERAL") // MEETING, LEGAL, DAILY, NOTICE
+  status      String   @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  completion  Int      @default(0)        // 0 to 100
+  
+  // Audit & Timing
+  deadline    DateTime?
+  estimatedHours Int     @default(0)
+  assignedTo  String?
+  completedBy String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  completedAt  DateTime?
+  timerActive  Boolean   @default(false)
+  timerStart   DateTime?
+  totalSeconds Int       @default(0)
+
+  @@map("tasks")
+}
+
+// ─── CONTINUOUS IMPROVEMENT (CI) MASTERS ──────────────────────────────────────
+
+model ChecklistMaster {
+  id          String   @id @default(uuid())
+  title       String   @unique
+  department  String?
+  type        String   @default("QUALITY") // QUALITY, SAFETY, MAINTENANCE, PROCESS
+  points      Json     // Array of points to check
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("checklist_masters")
+}
+
+model Kaizen {
+  id               String   @id @default(uuid())
+  kaizenNo         String   @unique
+  title            String
+  department       String?
+  area             String?
+  problemStatement String
+  solution         String
+  benefits         String?
+  implementedBy    String?
+  implementedDate  DateTime?
+  status           String   @default("OPEN") // OPEN, IMPLEMENTED, REJECTED
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("kaizen_masters")
+}
+
+model PokaYoke {
+  id             String   @id @default(uuid())
+  pyNo           String   @unique
+  processName    String
+  department     String?
+  defectPrevented String
+  mechanism      String
+  verificationMethod String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("pokayoke_masters")
+}
+
+// ─── QUALITY CONTROL MASTERS ──────────────────────────────────────────────────
+
+model QCParameter {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  unit        String?
+  minValue    Float?
+  maxValue    Float?
+  isRange     Boolean  @default(true)
+  type        String   @default("RANGE") // RANGE, MIN_ONLY, MAX_ONLY, FIXED
+  instrument  String?  // Measuring device/instrument
+  method      String?  // Testing method/standard
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("qc_parameters")
+}
+
+// ─── PLANT MAINTENANCE ────────────────────────────────────────────────────────
+
+model Machine {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  location    String?
+  department  String?
+  status      String   @default("OPERATIONAL") // OPERATIONAL, DOWN, UNDER_MAINTENANCE
+  make        String?
+  model       String?
+  installDate DateTime?
+  lastService DateTime?
+  nextService DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  checkpoints MaintenanceCheckpoint[]
+  breakdowns  BreakdownReport[]
+
+  @@map("machines")
+}
+
+model MaintenanceCheckpoint {
+  id          String   @id @default(uuid())
+  machineId   String
+  parameter   String
+  description String?
+  frequency   String   @default("DAILY") // DAILY, WEEKLY, MONTHLY
+  
+  machine     Machine  @relation(fields: [machineId], references: [id], onDelete: Cascade)
+
+  @@map("maintenance_checkpoints")
+}
+
+model BreakdownReport {
+  id             String    @id @default(uuid())
+  reportNo       String    @unique
+  machineId      String
+  breakdownDate  DateTime
+  downTimeStart  DateTime
+  downTimeEnd    DateTime?
+  type           String    @default("RUNNING") // RUNNING, CRITICAL
+  reason         String
+  reportedBy     String
+  approvedBy     String?
+  actionTaken    String?
+  partsChanged   Json?     // Array of parts and costs
+  totalCharge    Float     @default(0)
+  status         String    @default("OPEN") // OPEN, RESOLVED
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  machine        Machine   @relation(fields: [machineId], references: [id])
+
+  @@map("breakdown_reports")
+}

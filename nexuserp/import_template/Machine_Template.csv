@@ -1,0 +1,6 @@
+Machine Name,Machine Code,Department,Location,Category,Criticality,Status,Purchase Date,Warranty Expiry,Maintenance Cycle (Days)
+Injection Molding Machine 01,IMM-001,Production,Block A,Production,HIGH,ACTIVE,2024-01-15,2026-01-15,30
+Air Compressor 05,AC-005,Maintenance,Utility Room,Utility,MEDIUM,ACTIVE,2023-11-20,2025-11-20,90
+Cooling Tower 02,CT-002,Infrastructure,Rooftop,Utility,HIGH,MAINTENANCE,2022-06-10,2024-06-10,180
+CNC Lathe Machine,CNC-010,Machining,Block B,Production,MEDIUM,ACTIVE,2025-02-05,2027-02-05,60
+Forklift 03,FL-003,Logistics,Warehouse,Material Handling,HIGH,ACTIVE,2024-08-12,2025-08-12,45

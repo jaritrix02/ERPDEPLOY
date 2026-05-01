@@ -1,0 +1,4 @@
+empCode,name,email,department,designation,dateOfJoining,basicSalary,status
+E001,John Smith,john.s@nexuserp.com,PRODUCTION,Supervisor,2024-01-15,45000,ACTIVE
+E002,Sarah Wilson,sarah.w@nexuserp.com,QUALITY,Manager,2023-11-20,65000,ACTIVE
+E003,Mike Ross,mike.r@nexuserp.com,PURCHASE,Executive,2025-02-01,35000,ACTIVE

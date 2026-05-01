@@ -1,0 +1,3 @@
+vendorCode,companyName,contactPerson,email,phone,gstNumber,panNumber,address,city,state,pincode
+VEND-001,Apex Raw Materials,John Doe,john@apex.com,9876543210,27AAAAA0000A1Z5,ABCDE1234F,123 Industrial Area,Mumbai,Maharashtra,400001
+VEND-002,Global Tech Solutions,Jane Smith,jane@globaltech.com,9876543211,27BBBBB0000B1Z5,FGHIJ5678K,456 Tech Park,Bangalore,Karnataka,560001

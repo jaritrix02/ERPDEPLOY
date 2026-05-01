@@ -1,0 +1,187 @@
+{
+  "customers": [
+    {
+      "id": "customer-80344a2b-554a-4035-b4bd-fc8b1626c9cd",
+      "name": "Smoke Customer 1777561454758",
+      "code": "SMK-C-1777561454758",
+      "phone": "0000000000",
+      "email": "smoke-1777561454758@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "demo-customer-1",
+      "companyName": "ACME INDUSTRIES",
+      "contactPerson": "RAHUL MEHRA",
+      "email": "purchase@acme.example",
+      "mobile": "9876501111",
+      "address": "PUNE INDUSTRIAL AREA",
+      "type": "DOMESTIC",
+      "gstNo": "27ABCDE1234F1Z5"
+    },
+    {
+      "id": "demo-customer-2",
+      "companyName": "GLOBAL RUBBER LLC",
+      "contactPerson": "ANITA SHAH",
+      "email": "exports@globalrubber.example",
+      "mobile": "9876502222",
+      "address": "JEBEL ALI FREE ZONE",
+      "type": "EXPORT",
+      "gstNo": ""
+    }
+  ],
+  "groups": [
+    {
+      "id": "demo-group-1",
+      "groupName": "NUCORK HOLDINGS",
+      "parentId": "",
+      "headOffice": "MUMBAI",
+      "email": "corp@nucork.example",
+      "mobile": "9876503333"
+    },
+    {
+      "id": "demo-group-2",
+      "groupName": "NUCORK MANUFACTURING UNIT",
+      "parentId": "demo-group-1",
+      "headOffice": "NASHIK",
+      "email": "plant@nucork.example",
+      "mobile": "9876503334"
+    }
+  ],
+  "transporters": [
+    {
+      "id": "demo-transporter-1",
+      "transporterName": "FASTWAY LOGISTICS",
+      "contactPerson": "SURESH PATIL",
+      "email": "ops@fastway.example",
+      "mobile": "9876504444",
+      "address": "BHIWANDI HUB",
+      "vehicleCount": 18,
+      "registrationNo": "TRN-MH-001"
+    },
+    {
+      "id": "demo-transporter-2",
+      "transporterName": "WESTERN FREIGHT CARRIERS",
+      "contactPerson": "IMRAN KHAN",
+      "email": "desk@westernfreight.example",
+      "mobile": "9876505555",
+      "address": "VAPI DEPOT",
+      "vehicleCount": 11,
+      "registrationNo": "TRN-GJ-014"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "demo-job-1",
+      "title": "QUALITY INSPECTOR",
+      "department": "Quality",
+      "positionType": "FULL_TIME",
+      "openings": 2,
+      "status": "OPEN",
+      "description": "Incoming and final inspection ownership.",
+      "requirements": "QC tools and shop-floor experience."
+    },
+    {
+      "id": "demo-job-2",
+      "title": "STORE EXECUTIVE",
+      "department": "Stores",
+      "positionType": "FULL_TIME",
+      "openings": 1,
+      "status": "OPEN",
+      "description": "GRN, MRN, and stock ledger control.",
+      "requirements": "ERP and inventory experience."
+    }
+  ],
+  "trainings": [
+    {
+      "id": "demo-training-1",
+      "title": "FIRE SAFETY REFRESHER",
+      "type": "COMPLIANCE",
+      "trainer": "SAFETY TEAM",
+      "startDate": "2026-04-20",
+      "endDate": "2026-04-20",
+      "status": "COMPLETED",
+      "description": "Mandatory safety refresher."
+    },
+    {
+      "id": "demo-training-2",
+      "title": "5S SHOP FLOOR AUDIT",
+      "type": "TECHNICAL",
+      "trainer": "CI TEAM",
+      "startDate": "2026-05-05",
+      "endDate": "2026-05-06",
+      "status": "PLANNED",
+      "description": "Lean workplace audit training."
+    }
+  ],
+  "performance": [
+    {
+      "id": "demo-performance-1",
+      "employeeId": "",
+      "reviewDate": "2026-04-15",
+      "rating": 4,
+      "comments": "Reliable ownership of daily production targets.",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "demo-performance-2",
+      "employeeId": "",
+      "reviewDate": "2026-04-18",
+      "rating": 5,
+      "comments": "Excellent attendance and team coordination.",
+      "status": "COMPLETED"
+    }
+  ],
+  "exits": [
+    {
+      "id": "demo-exit-1",
+      "employeeId": "",
+      "exitDate": "2026-05-31",
+      "reason": "Relocation",
+      "type": "RESIGNATION",
+      "status": "PENDING"
+    }
+  ],
+  "leaves": [
+    {
+      "id": "demo-leave-1",
+      "employeeId": "",
+      "leaveType": "SICK",
+      "startDate": "2026-04-26",
+      "endDate": "2026-04-27",
+      "reason": "Medical recovery",
+      "status": "APPROVED"
+    },
+    {
+      "id": "demo-leave-2",
+      "employeeId": "",
+      "leaveType": "CASUAL",
+      "startDate": "2026-05-03",
+      "endDate": "2026-05-03",
+      "reason": "Personal work",
+      "status": "REJECTED"
+    }
+  ],
+  "outward": [
+    {
+      "id": "outward-a981719f-ed88-46e2-8f0c-16ce03bcfc2d",
+      "passNo": "SMK-OUT-1777561454758",
+      "visitorName": "Smoke Test",
+      "purpose": "Testing",
+      "status": "OPEN",
+      "date": "2026-04-30"
+    },
+    {
+      "id": "demo-outward-1",
+      "passNo": "OUT-2026-001",
+      "destination": "ACME INDUSTRIES",
+      "vehicleNo": "MH12AB1234",
+      "driverName": "MAHESH",
+      "driverPhone": "9876507777",
+      "driverAadhar": "123412341234",
+      "materialDesc": "FINISHED RUBBER SHEETS",
+      "qty": "40 NOS",
+      "remark": "Demo dispatch",
+      "date": "2026-04-30"
+    }
+  ]
+}
