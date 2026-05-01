@@ -8,11 +8,7 @@
     "server": "cd server && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "npm run dev",
-    "postinstall": "cd client && npm install && npm run build && cd ../server && npm install",
-    "version": 2,
-    "buildCommand": "npm install && npm run build",
-    "outputDirectory": "nexuserp/client/src",
-    "installCommand": "npm install" 
+    "postinstall": "cd client && npm install && npm run build && cd ../server && npm install"
 },
   "devDependencies": {
     "concurrently": "^8.2.2"
