@@ -7,9 +7,10 @@
     "client": "cd client && npm run dev",
     "server": "cd server && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "npm run dev",
+    "build": "cd client && npm run build && cd ../server && npx prisma generate",
+    "start": "cd server && npm start",
     "postinstall": "cd client && npm install && npm run build && cd ../server && npm install"
-},
+  },
   "devDependencies": {
     "concurrently": "^8.2.2"
   }

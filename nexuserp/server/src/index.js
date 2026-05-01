@@ -83,6 +83,16 @@ app.use('/api', require('./routes/demoRecords'));
 // ─── Health Check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => res.json({ status: 'OK', time: new Date() }));
 
+// ─── Serve Frontend in Production ─────────────────────────────────────────────
+const path = require('path');
+const clientPath = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientPath));
+
+app.get('*', (req, res, next) => {
+  if (req.originalUrl.startsWith('/api')) return next();
+  res.sendFile(path.join(clientPath, 'index.html'));
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ success: false, message: err.message || 'Server Error' });
